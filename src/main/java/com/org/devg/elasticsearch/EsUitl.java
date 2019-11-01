@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class EsUitl {
 
-  /**
+   /**
    * 时间转化成 String 格式的时间
    *
    * @param dateFormat
@@ -18,8 +18,10 @@ public class EsUitl {
    */
   public static String transferLongToDate(String dateFormat, Long millSec) {
     SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-    Date date = new Date(millSec);
-    return sdf.format(date);
+    String millSecStr = millSec + "000";
+    Date date = new Date(Long.valueOf(millSecStr));
+    String resDate = sdf.format(date);
+    return resDate;
   }
 
 
