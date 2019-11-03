@@ -13,7 +13,7 @@ public @interface EsCloumn {
 
   String name() default "";
 
-  String array() default "0";
+  boolean isArray() default false;
 
   Class clazz() default void.class;
 

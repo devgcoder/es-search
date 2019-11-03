@@ -38,9 +38,9 @@ public class EsSearch {
       if (esCloumn != null) {
         field.setAccessible(true);
         String esName = esCloumn.name();
-        String esArray = esCloumn.array();
+        boolean esArray = esCloumn.isArray();
         Object esValue = null;
-        if (null != esArray && esArray.equals("1")) {
+        if (esArray) {
           String arrayValue = JSON.toJSONString(map.get(esName));
           Class<T> arrClazz = esCloumn.clazz();
           JSONArray jsonArray = new JSONArray();
