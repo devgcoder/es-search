@@ -164,7 +164,17 @@ public class EsSearch {
   public SearchResponse getSearchResponse(SearchSourceBuilder searchSourceBuilder, String... indices) throws IOException {
     searchSourceBuilder.trackTotalHits(true);
     SearchRequest searchRequest = this.getSearchRequest(searchSourceBuilder, indices);
-    SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+    SearchResponse searchResponse = null;
+    try {
+      searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+    } catch (Exception ex) {
+      logger.error("search-exception:", ex);
+      try {
+        searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+      } catch (Exception e) {
+        logger.error("search-exception-1:", ex);
+      }
+    }
     return searchResponse;
   }
 
@@ -198,11 +208,11 @@ public class EsSearch {
     return EsResult.getEsResult(esResultList, searchResponse);
   }
 
-  public EsResult<Map<String, Object>> getEsResult(SearchSourceBuilder searchSourceBuilder,Integer pageNum, Integer pageSize,
+  public EsResult<Map<String, Object>> getEsResult(SearchSourceBuilder searchSourceBuilder, Integer pageNum, Integer pageSize,
       String... indices) throws Exception {
     searchSourceBuilder.from((pageNum - 1) * pageSize);
     searchSourceBuilder.size(pageSize);
-    return getEsResult(searchSourceBuilder,indices);
+    return getEsResult(searchSourceBuilder, indices);
   }
 
   public EsResult<Map<String, Object>> getEsResult(SearchSourceBuilder searchSourceBuilder, String... indices) throws Exception {
